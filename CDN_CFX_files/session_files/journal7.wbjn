@@ -1,0 +1,61 @@
+# encoding: utf-8
+# 2021 R2
+SetScriptVersion(Version="21.2.209")
+system1 = GetSystem(Name="CFX")
+results1 = system1.GetContainer(ComponentName="Results")
+results1.Edit()
+results1.SendCommand(Command="""VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = -0.00212264, 0.000618051, 8.13945e-05
+    Scale = 4.38354
+    Pan = -0.0111248, 0.0120332
+    Rotation Quaternion = 0, 0, 0, 1
+    
+  END
+
+END
+
+> update
+>centerview 1""")
+system2 = GetSystem(Name="CFX 1")
+results2 = system2.GetContainer(ComponentName="Results")
+results2.Edit()
+results2.SendCommand(Command=">centerview 1")
+system3 = GetSystem(Name="CFX 2")
+results3 = system3.GetContainer(ComponentName="Results")
+results3.Edit()
+system3.Delete()
+results2.Exit()
+system2.Delete()
+system1.DisplayText = "CDN (CFX)"
+results1.SendCommand(Command="""VIEW:View 1
+  Camera Mode = User Specified
+  CAMERA:
+    Option = Pivot Point and Quaternion
+    Pivot Point = 4.47035e-08, 0, 0
+    Scale = 4.67682
+    Pan = 0.020436, 0.0189222
+    Rotation Quaternion = 0, 0, 0, 1
+    
+  END
+
+END
+
+> update
+HARDCOPY:
+Antialiasing = On
+Hardcopy Filename = Z:/ANSYS Fluent/Github uploads/CDN/CDN - CFX/CDN_CFX.png
+Hardcopy Format = png
+Hardcopy Tolerance = 0.0001
+Image Height = 600
+Image Scale = 100
+Image Width = 600
+JPEG Image Quality = 80
+Use Screen Size = On
+White Background = Off
+END
+>print""")
+results1.Exit()
+Save(Overwrite=True)
